@@ -39,7 +39,7 @@ async def predict(request):
         if state:
             result = ts.get_result(worker_id, task_id)
             break
-        await asyncio.sleep(0.01)
+        await asyncio.sleep(0.02)
     return web.json_response(result)
 
 
