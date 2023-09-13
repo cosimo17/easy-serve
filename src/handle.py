@@ -3,6 +3,10 @@ import onnxruntime as ort
 import cv2
 import numpy as np
 import base64
+import os
+from pathlib import Path
+
+project_path = Path(__file__).parent.parent
 
 
 class ClassRegistry:
@@ -48,7 +52,8 @@ class BaseHandle(metaclass=ABCMeta):
 @registry.reg()
 class ImagenetResnet18Handle(BaseHandle):
     def __init__(self, gpu):
-        model_path = '../models/resnet18-v1-7.onnx'
+        model_name = 'resnet18-v1-7.onnx'
+        model_path = os.path.join(str(project_path), 'models', model_name)
         providers = [
             ('CUDAExecutionProvider', {
                 'device_id': int(gpu),
@@ -95,7 +100,8 @@ class ImagenetResnet18Handle(BaseHandle):
 @registry.reg()
 class CoCoYOLOV3Handle(BaseHandle):
     def __init__(self, gpu):
-        model_path = '../models/yolov3-10.onnx'
+        model_name = 'yolov3-10.onnx'
+        model_path = os.path.join(str(project_path), 'models', model_name)
         providers = [
             ('CUDAExecutionProvider', {
                 'device_id': int(gpu),
