@@ -1,0 +1,7 @@
+aiohttp[speedups]
+numpy
+opencv-python
+onnxruntime-gpu
+cuda-python
+tensorrt
+PyYAML
