@@ -48,10 +48,33 @@
 `{'task_id': xxxxx, 'task_info': {'img': abcde}}`
 ## 多机分布式部署
 ![分布式部署](assets/分布式部署概念图.png)    
-使用nginx与本项目结合，可以方便地进行多机分布式部署
-安装nginx
-配置nginx
-启动nginx
+使用nginx与本项目结合，可以方便地进行多机分布式部署    
+安装nginx    
+`sudo apt-get install nginx`
+
+配置nginx    
+创建一个文本文件，将下面的内容复制粘贴进去，修改upstream中的服务器配置，修改listen的端口号。将文本文件移动到/etc/nginx/sites-enabled    
+修改/etc/nginx/nginx.conf，在http一节的大括号的末尾添加“include /etc/nginx/sites-enabled/你的文本文件名;”
+```
+upstream inference {
+    server ip_of_serve1:port;
+    server ip_of_server2:port;
+    # other serves
+}
+
+server {
+    listen 8080;
+    server_name ml.easy-serve.com;
+
+    location / {
+        proxy_pass http://inference;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+```
+启动nginx    
+`sudo systemctl -l enable nginx && sudo service nginx start`
 ## 进程守护
 watchdog.py实现了一个简单的监视器，可以监控服务器进程的运行状态并在服务器进程崩溃或推出时自动重启。    
 如果使用watchdog的方式启动，就不需要在手动启动app.py，watchdog运行时会自动启动服务器进程。    
