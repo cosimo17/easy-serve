@@ -1,6 +1,6 @@
 import asyncio
 from aiohttp import web
-from task_manager import TaskScheduler
+from task_scheduler import TaskScheduler
 import argparse
 from util import parse_config
 from handle import registry
